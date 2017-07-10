@@ -237,12 +237,14 @@ then
     # The only way to install python-bottle on Centos7 is with easy_install or pip
     [ "$_DISTRO" == "CentOS" -o "$_DISTRO" == "Red" ] && easy_install -U bottle
 
+
+    echo "using igor's branch"
     # required for vmware connector TODO move that to separete opt in install script
-    sudo pip install --upgrade pip
-    sudo pip install pyvcloud
-    sudo pip install progressbar
-    sudo pip install prettytable
-    sudo pip install pyvmomi
+    sudo -HE pip install --upgrade pip
+    sudo -HE pip install pyvcloud
+    sudo -HE pip install progressbar
+    sudo -HE pip install prettytable
+    sudo -HE pip install pyvmomi
 
     # required for AWS connector
     [ "$_DISTRO" == "Ubuntu" ] && install_packages "python-boto"

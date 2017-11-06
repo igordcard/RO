@@ -1747,9 +1747,7 @@ class vimconnector(vimconn.vimconnector):
             self._reload_connection()
             correlation = None
             if sfc_encap:
-                # TODO(igordc): must be changed to NSH in Queens
-                # (MPLS is a workaround)
-                correlation = 'mpls'
+                correlation = 'nsh'
             if len(ingress_ports) != 1:
                 raise vimconn.vimconnNotSupportedException(
                     "OpenStack VIM connector can only have "
@@ -1827,12 +1825,10 @@ class vimconnector(vimconn.vimconnector):
             self._reload_connection()
             correlation = None
             if sfc_encap:
-                # TODO(igordc): must be changed to NSH in Queens
-                # (MPLS is a workaround)
-                correlation = 'mpls'
+                correlation = 'nsh'
             for instance in sfis:
                 sfi = self.get_sfi(instance)
-                if sfi.get('sfc_encap') != correlation:
+                if sfi.get('sfc_encap') != sfc_encap:
                     raise vimconn.vimconnNotSupportedException(
                         "OpenStack VIM connector requires all SFIs of the "
                         "same SF to share the same SFC Encapsulation")
@@ -1898,13 +1894,11 @@ class vimconnector(vimconn.vimconnector):
         try:
             new_sfp = None
             self._reload_connection()
-            if not sfc_encap:
-                raise vimconn.vimconnNotSupportedException(
-                    "OpenStack VIM connector only supports "
-                    "SFC-Encapsulated chains")
-            # TODO(igordc): must be changed to NSH in Queens
-            # (MPLS is a workaround)
-            correlation = 'mpls'
+            # In networking-sfc the MPLS encapsulation is legacy
+            # should be used when no full SFC Encapsulation is intended
+            sfc_encap = 'mpls'
+            if sfc_encap:
+                correlation = 'nsh'
             sfp_dict = {'name': name,
                         'flow_classifiers': classifications,
                         'port_pair_groups': sfs,

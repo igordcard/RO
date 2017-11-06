@@ -153,6 +153,7 @@ def _print_verbose(mano_response, verbose_level=0):
                         myoutput += new_line + "  Description: {:20}".format(content['description'])
             print myoutput
     else:
+        #import pdb; pdb.set_trace()
         print content['error']['description']
     return result
 
@@ -178,6 +179,7 @@ def parser_json_yaml(file_name):
         try:
             config = json.loads(text) 
         except Exception as e:
+            #import pdb; pdb.set_trace()
             return (False, "Error loading file '"+file_name+"' json format error " + str(e) )
 
     return True, config
@@ -484,6 +486,7 @@ def scenario_create(args):
     logger.debug("openmano request: %s", payload_req)
     mano_response = requests.post(URLrequest, headers = headers_req, data=payload_req)
     logger.debug("openmano response: %s", mano_response.text )
+    #import pdb; pdb.set_trace()
     return _print_verbose(mano_response, args.verbose)
 
 def scenario_list(args):
@@ -2060,6 +2063,7 @@ if __name__=="__main__":
         logging.basicConfig(format=streamformat, level= level)
         logger = logging.getLogger('mano')
         logger.setLevel(level)
+        #import pdb; pdb.set_trace()
         result = args.func(args)
         if result == None:
             result = 0
